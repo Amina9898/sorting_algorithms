@@ -47,16 +47,12 @@ void insertion_sort_list(listint_t **list)
 		
 		if (num < h->prev->n)
 		{
-			while (num < h->prev->n && h->prev != NULL)
+			while (num < h->prev->n && h->next != NULL)
 			{
-				h = h->prev;
+				current = h->prev;
+				h = h->next;
+				print_list(*list);
 			}
-			tmp->prev->next = tmp->next;
-			tmp->next->prev = tmp->prev;
-			h->next->prev = current;
-			current->next = h->next;
-			h->next = current;
-			print_list(*list);
 		}
 		tmp = tmp->next;
 	}
