@@ -28,4 +28,5 @@ void insertion_sort_list(listint_t **list);
 
 size_t listint_len(listint_t *h);
 
+void selection_sort(int *array, size_t size);
 #endif
