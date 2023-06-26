@@ -27,48 +27,37 @@ size_t listint_len(listint_t *h)
 void insertion_sort_list(listint_t **list)
 {
 	size_t len;
-	listint_t *h, *tmp, *p;
+	listint_t *h, *tmp;
 
 	if (!list || *list == NULL)
 		return;
-	
+
 	len = listint_len(*list);
 	if (len < 2)
 		return;
 
-	tmp = (*list)->next;
+	tmp = (*list);
 
-	while (tmp != NULL)
+	while (tmp)
 	{
-		h = (*list)->next;
-		while (h->next != NULL)
+		while (tmp->next && tmp->n > tmp->next->n)
 		{
-			
-			if (h->n < h->prev->n)
-			{
-				if(h->prev->prev != NULL)
-				{
-					p = h->prev->prev;
-					h->next->prev = h->prev;
-					h->prev->prev->next = h;
-					h->prev->next = h->next;
-					h->prev->prev = h;
-					h->next = h->prev;
-					h->prev = p;
-					print_list(*list);
-				}
-				if (h->prev->prev == NULL)
-				{
-					h->prev->next = h->next;
-					h->prev->prev = h;
-					h->next->prev = h->prev;
-					h->next = h->prev;
-					h->prev = NULL;
-					(*list) = h;
-				}
-				break;
-			}
-			h = h->next;
+			h = tmp->next;
+			tmp->next = h->next;
+			h->prev = tmp->prev;
+
+			if (tmp->prev)
+				tmp->prev->next = h;
+			if (h->next)
+				h->next->prev = tmp;
+			h->next = tmp;
+			tmp->prev = h;
+
+			if (h->prev)
+				tmp = h->prev;
+			else
+				*list = h;
+			print_list(*list);
 		}
 		tmp = tmp->next;
 	}
