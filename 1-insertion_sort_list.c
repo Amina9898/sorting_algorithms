@@ -27,8 +27,7 @@ size_t listint_len(listint_t *h)
 void insertion_sort_list(listint_t **list)
 {
 	size_t len;
-	listint_t *h, *tmp, *current;
-	int num;
+	listint_t *h, *tmp, *p;
 
 	if (!list || *list == NULL)
 		return;
@@ -41,18 +40,35 @@ void insertion_sort_list(listint_t **list)
 
 	while (tmp != NULL)
 	{
-		num = tmp->n;
-		h = tmp;
-		current = tmp;
-		
-		if (num < h->prev->n)
+		h = (*list)->next;
+		while (h->next != NULL)
 		{
-			while (num < h->prev->n && h->next != NULL)
+			
+			if (h->n < h->prev->n)
 			{
-				current = h->prev;
-				h = h->next;
-				print_list(*list);
+				if(h->prev->prev != NULL)
+				{
+					p = h->prev->prev;
+					h->next->prev = h->prev;
+					h->prev->prev->next = h;
+					h->prev->next = h->next;
+					h->prev->prev = h;
+					h->next = h->prev;
+					h->prev = p;
+					print_list(*list);
+				}
+				if (h->prev->prev == NULL)
+				{
+					h->prev->next = h->next;
+					h->prev->prev = h;
+					h->next->prev = h->prev;
+					h->next = h->prev;
+					h->prev = NULL;
+					(*list) = h;
+				}
+				break;
 			}
+			h = h->next;
 		}
 		tmp = tmp->next;
 	}
