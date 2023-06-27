@@ -3,57 +3,57 @@
 /**
  * lomuto_scheme - a function that sorts the elements of an array
  * according to the lomuto partitioning scheme
- * @arr: array to sort
+ * @array: array to sort
  * @low: first index of the array
  * @high: last index of the array
- * Return - the index of the pivot after partitioning
+ * @size: size of the array
  */
 
-int lomuto_scheme(int *array, int low, int high)
+void lomuto_scheme(int *array, int low, int high, int size)
 {
-	int pivot, i, j, tmp, tmp2;
+	int pivot, i, j, tmp;
 
-	pivot = array[high];
-	i = low - 1;
-
-	for (j = low; j <= high - 1; j++)
+	if (low < high)
 	{
-		if (array[j] <= pivot)
-		{
-			i++;
-			tmp = array[i];
-			array[i] = array[j];
-			array[j] = tmp;
+		pivot = high;
+		i = low;
 
-			print_array(array, high + 1);
+		for (j = low; j < high; j++)
+		{
+			if (array[j] < array[pivot])
+			{
+				if (j != i)
+				{
+					tmp = array[j];
+					array[j] = array[i];
+					array[i] = tmp;
+					print_array(array, size);
+				}
+				i++;
+			}
 		}
+		if (i != pivot && array[i] != array[pivot])
+		{
+			tmp = array[i];
+			array[i] = array[pivot];
+			array[pivot] = tmp;
+			print_array(array, size);
+		}
+		lomuto_scheme(array, low, i - 1, size);
+		lomuto_scheme(array, i + 1, high, size);
 	}
 
-	tmp2 = array[i + 1];
-	array[i + 1] = array[high];
-	array[high] = tmp2;
-
-	print_array(array, high + 1);
-
-	return i + 1;
 }
 
-int main()
-{
-	int array[] = {22, 44, 6, 7, 9, 3, 55, 22, 13, 11};
-
-	lomuto_scheme(array, 0, 9);
-}
 /**
  * quick_sort - function that sorts an array of integer
  * in ascending order using the Quick sort algorithm
  * @array: array to sort
  * @size: size of the array
- *
+ */
 
 void quick_sort(int *array, size_t size)
 {
-
+	lomuto_scheme(array, 0, size - 1, size);
 }
-*/
 
